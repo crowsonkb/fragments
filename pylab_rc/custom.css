@@ -1,0 +1,26 @@
+body {
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', sans-serif !important;
+    font-size: 13px;
+}
+
+div#notebook, div.CodeMirror, div.output_area pre, div.output_wrapper, div.prompt, div.completions select, div#pager-container pre {
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: 'Menlo', 'Consolas', monospace !important;
+    font-size: 12px;
+    line-height: 1.333;
+}
+
+div.output_html, div.text_cell_render {
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', sans-serif !important;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.terminal-app div#terminado-container div.terminal, .terminal-app pre#dummy-screen {
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: 'Menlo', 'Consolas', monospace !important;
+    font-size: 12px;
+    line-height: 1.2;
+}

@@ -1,0 +1,13 @@
+backend : macosx
+timezone : US/Pacific
+lines.linewidth : 1.25
+lines.markeredgewidth : 0.85
+lines.markersize : 5
+patch.linewidth : 1.25
+font.size : 12.0
+figure.figsize : 9, 6
+image.interpolation : catrom
+image.cmap : gray
+image.lut : 2048
+savefig.dpi : 160
+animation.codec : h264
