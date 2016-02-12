@@ -57,7 +57,7 @@ class EmbeddedImage:
     NEAREST_STYLE = """image-rendering: -moz-crisp-edges;
                        image-rendering:   -o-crisp-edges;
                        image-rendering: -webkit-optimize-contrast;
-                       image-rendering: crisp-edges;
+                       image-rendering: pixelated;
                        -ms-interpolation-mode: nearest-neighbor;"""
 
     def __init__(self, arr, scale=1, format='png', nearest=False):
@@ -83,7 +83,7 @@ class EmbeddedImage:
         if nearest:
             style = self.NEAREST_STYLE
         template = """<img width="%d" height="%d" style="%s"
-                           src="data:image/png;base64,%s">"""
+                      src="data:image/png;base64,%s">"""
         self.html = template % (round(img.width*scale),
                                 round(img.height*scale),
                                 style, data)
