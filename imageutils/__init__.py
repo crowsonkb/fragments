@@ -1,5 +1,6 @@
 """Miscellaneous image resampling and display utilities."""
 
-from ._imageutils import *
+from .embed_image import EmbedImage
+from .resample import resample
 
-__all__ = _imageutils.__all__
+__all__ = ['EmbedImage', 'resample']
