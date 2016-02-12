@@ -18,7 +18,7 @@ class EmbeddedImage:
                        image-rendering: pixelated;
                        -ms-interpolation-mode: nearest-neighbor;"""
 
-    def __init__(self, arr, scale=1, format='png', nearest=False):
+    def __init__(self, arr, scale=1, fmt='png', nearest=False):
         """Constructs a new EmbeddedImage object.
 
         Args:
@@ -35,7 +35,7 @@ class EmbeddedImage:
             arr = arr[..., 0]
         img = PIL.Image.fromarray(np.uint8(np.round(np.clip(arr, 0, 255))))
         with io.BytesIO() as buf:
-            img.save(buf, format=format)
+            img.save(buf, format=fmt)
             data = base64.b64encode(buf.getvalue()).decode()
         style = ''
         if nearest:
