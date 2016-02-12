@@ -1,3 +1,5 @@
+"""Miscellaneous image resampling and display utilities."""
+
 import base64
 import io
 import numpy as np
@@ -27,8 +29,8 @@ def resample(arr, h, w, method='bicubic'):
         method (str): The resampling method to use.
             'nearest':  nearest neighbor (pixelated)
             'bilinear': linear interpolation
-            'bicubic':  cubic spline resampling (best for resampling up)
-            'lanczos':  Lanczos filtering (best for resampling down)
+            'bicubic':  cubic spline interpolation (default)
+            'lanczos':  Lanczos interpolation (best for resampling down)
 
     Returns:
         np.array: The output image.
@@ -52,16 +54,24 @@ class EmbeddedImage:
     """Embeds a NumPy array containing image data into an HTML document,
     such as Jupyter Notebook, using the data URI scheme."""
 
+    NEAREST_STYLE = """image-rendering: -moz-crisp-edges;
+                       image-rendering:   -o-crisp-edges;
+                       image-rendering: -webkit-optimize-contrast;
+                       image-rendering: crisp-edges;
+                       -ms-interpolation-mode: nearest-neighbor;"""
+
     def __init__(self, arr, scale=1, format='png', nearest=False):
-        """Args:
+        """Constructs a new EmbeddedImage object.
+
+        Args:
             arr (np.array): The input image data.
-            scale (float): The amount that the browser should scale the rendered image,
-                relative to its original dimension. 1/2 should produce image rendering
-                suitable for a HiDPI display.
-            format (str): The image format to embed into the HTML document. Options include
-                'png', 'jpeg', and others supported by PIL.
-            nearest (bool): If True, instructs the browser to scale the image using
-                nearest neighbor (pixelated) interpolation.
+            scale (float): The amount that the browser should scale the
+                rendered image, relative to its original dimension. 1/2 or
+                smaller produces rendering suitable for a HiDPI display.
+            format (str): The image format to embed into the HTML document.
+                Options include 'png', 'jpeg', and others supported by PIL.
+            nearest (bool): If True, instructs the browser to scale the image
+                using nearest neighbor (pixelated) interpolation.
         """
         if arr.ndim == 3 and arr.shape[-1] == 1:
             arr = arr[..., 0]
@@ -71,11 +81,17 @@ class EmbeddedImage:
             data = base64.b64encode(buf.getvalue()).decode()
         style = ''
         if nearest:
-            # TODO: make this work in more than just Webkit
-            style = 'image-rendering: -webkit-optimize-contrast;'
-        template = '<img width="%d" height="%d" style="%s" src="data:image/png;base64,%s">'
-        self.html = template % (round(img.width*scale), round(img.height*scale), style, data)
+            style = self.NEAREST_STYLE
+        template = """<img width="%d" height="%d" style="%s"
+                           src="data:image/png;base64,%s">"""
+        self.html = template % (round(img.width*scale),
+                                round(img.height*scale),
+                                style, data)
 
     def _repr_html_(self):
-        """Called by the Jupyter Notebook to render this EmbeddedImage object."""
+        """Called by the Jupyter Notebook to render this image object.
+
+        Returns:
+            The HTML representation, containing an embedded image.
+        """
         return self.html
